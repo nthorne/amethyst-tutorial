@@ -1,0 +1,7 @@
+[package]
+name = "amethyst-tutorial"
+version = "0.1.0"
+authors = ["Niklas Thörne <notrupertthorne@gmail.com>"]
+
+[dependencies]
+amethyst = "0.10.0"

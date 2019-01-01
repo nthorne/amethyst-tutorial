@@ -14,8 +14,8 @@ pub struct Pong;
 pub const ARENA_HEIGHT: f32 = 100.0;
 pub const ARENA_WIDTH: f32 = 100.0;
 // Determines paddle width and height
-const PADDLE_HEIGHT: f32 = 16.0;
-const PADDLE_WIDTH: f32 = 4.0;
+pub const PADDLE_HEIGHT: f32 = 16.0;
+pub const PADDLE_WIDTH: f32 = 4.0;
 
 
 // SimpleState handles a lot of the basics, such as handing updates and events,
@@ -27,9 +27,6 @@ impl SimpleState for Pong {
 
         // Load the spritesheet necessary to render the graphics.
         let sprite_sheet_handle = load_sprite_sheet(world);
-
-        // Register the Paddle component in order to setup storage for it
-        world.register::<Paddle>();
 
         initialise_paddles(world, sprite_sheet_handle);
         initialize_camera(world);

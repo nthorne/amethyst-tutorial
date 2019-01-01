@@ -1,19 +1,13 @@
 extern crate amethyst;
 
+mod pong;
+use crate::pong::Pong;
+
 use amethyst::prelude::*;
-use amethyst::renderer::{DisplayConfig, DrawFlat2D, Event, Pipeline,
-                         RenderBundle, Stage, VirtualKeyCode};
+use amethyst::renderer::{DisplayConfig, DrawFlat2D, Pipeline,
+                         RenderBundle, Stage};
 use amethyst::utils::application_root_dir;
-
-pub struct Pong;
-
-/**
- * SimpleState handles a lot of the basics, such as handing updates and events,
- * which we would have to implement ourselves otherwise.
- */
-impl SimpleState for Pong {
-
-}
+use amethyst::core::transform::TransformBundle;
 
 // Returns a amethyst::Result so that we can use `.?` for exit on setup failure.
 fn main() -> amethyst::Result<()> {
@@ -38,7 +32,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
             .with_sprite_sheet_processor()
-        )?;
+        )?
+        .with_bundle(TransformBundle::new())?;
 
     // Bind the OS event loop and the amethyst components
     let mut game = Application::new("./", Pong, game_data)?;

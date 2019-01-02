@@ -52,7 +52,8 @@ fn main() -> amethyst::Result<()> {
         .with(systems::PaddleSystem, "paddle_system", &["input_system"])
         .with(systems::MoveBallsSystem, "ball_system", &[])
         // BounceSystem runs after both of its dependencies..
-        .with(systems::BounceSystem, "bounce_system", &["paddle_system", "ball_system"]);
+        .with(systems::BounceSystem, "bounce_system", &["paddle_system", "ball_system"])
+        .with(systems::WinnerSystem, "winner_system", &["ball_system"]);
 
     // Bind the OS event loop and the amethyst components
     let mut game = Application::new("./", Pong, game_data)?;

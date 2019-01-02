@@ -16,7 +16,10 @@ pub const ARENA_WIDTH: f32 = 100.0;
 // Determines paddle width and height
 pub const PADDLE_HEIGHT: f32 = 16.0;
 pub const PADDLE_WIDTH: f32 = 4.0;
-
+// Determines ball attibutes
+pub const BALL_VELOCITY_X: f32 = 50.0;
+pub const BALL_VELOCITY_Y: f32 = 25.0;
+pub const BALL_RADIUS: f32 = 2.0;
 
 // SimpleState handles a lot of the basics, such as handing updates and events,
 // which we would have to implement ourselves otherwise.
@@ -28,6 +31,9 @@ impl SimpleState for Pong {
         // Load the spritesheet necessary to render the graphics.
         let sprite_sheet_handle = load_sprite_sheet(world);
 
+        world.register::<Ball>();
+
+        initialize_ball(world, sprite_sheet_handle.clone());
         initialise_paddles(world, sprite_sheet_handle);
         initialize_camera(world);
     }
@@ -143,4 +149,36 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
         (),
         &sprite_sheet_store,
         )
+}
+
+pub struct Ball {
+    pub velocity: [f32; 2], // 2-element array containing the X and Y velocities
+    pub radius: f32,
+}
+
+impl Component for Ball {
+    type Storage = DenseVecStorage<Self>;
+}
+
+fn initialize_ball(world: &mut World, spritesheet_handle: SpriteSheetHandle) {
+    // Create the transform
+    let mut transform = Transform::default();
+    // Ball will be placed center-ish
+    transform.set_xyz(ARENA_WIDTH/2.0, ARENA_HEIGHT/2.0, 0.0);
+
+    // set the sprite for the ball
+    let sprite_render = SpriteRender {
+        sprite_sheet: spritesheet_handle,
+        sprite_number: 1,                   // Ball sprite is 2nd in the sheet
+    };
+
+    world
+        .create_entity()
+        .with(sprite_render)
+        .with(Ball {
+            velocity: [BALL_VELOCITY_X, BALL_VELOCITY_Y],
+            radius: BALL_RADIUS,
+        })
+        .with(transform)
+        .build();
 }

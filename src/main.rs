@@ -10,6 +10,7 @@ use amethyst::renderer::{DisplayConfig, DrawFlat2D, Pipeline,
 use amethyst::utils::application_root_dir;
 use amethyst::core::transform::TransformBundle;
 use amethyst::input::InputBundle;
+use amethyst::ui::{DrawUi, UiBundle};
 
 // Returns a amethyst::Result so that we can use `.?` for exit on setup failure.
 fn main() -> amethyst::Result<()> {
@@ -37,7 +38,8 @@ fn main() -> amethyst::Result<()> {
         .with_stage(
             Stage::with_backbuffer()
             .clear_target([0.0, 0.0, 0.0, 1.0], 1.0)
-            .with_pass(DrawFlat2D::new()),
+            .with_pass(DrawFlat2D::new())
+            .with_pass(DrawUi::new()),
             );
 
     let game_data = GameDataBuilder::default()
@@ -47,6 +49,7 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
+        .with_bundle(UiBundle::<String, String>::new())?
         // input_system is a dependency that is defined in the standard
         // InputBundle
         .with(systems::PaddleSystem, "paddle_system", &["input_system"])
